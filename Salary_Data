@@ -1,0 +1,92 @@
+import pandas as pd
+import numpy as np
+
+data=pd.read_csv("Salary_Data.csv")
+data.head(100)
+
+import matplotlib.pyplot as plt
+plt.scatter(data['YearsExperience'],data['Salary'])
+plt.title('Salary vs Experience')
+plt.xlabel('Years of Experience')
+plt.ylabel('Salary')
+plt.show()
+
+data.info()
+#detect the missing values in the cells of the pandas data frame.
+#It returns a data frame of the same size with the values masked as True for NA values and False for non-NA values.
+data.isna()
+
+from sklearn.preprocessing import LabelEncoder
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import accuracy_score,confusion_matrix,mean_squared_error,mean_absolute_error,r2_score
+from sklearn.model_selection import train_test_split
+
+x = data['YearsExperience']
+y = data['Salary']
+
+X_train, X_test, y_train, y_test = train_test_split(x.values.reshape(-1, 1), y, test_size=0.3, random_state=0)
+#Reshape your data using array.reshape(-1, 1) if your data has a single feature.
+# This will convert the 1D Series (x) into a 2D array.
+model=LinearRegression()
+model.fit(X_train,y_train)
+
+y_pred = model.predict(X_test)
+y_pred
+
+mean_squared_error(y_test,y_pred)
+confusion_matrix(y_test,y_pred)
+import matplotlib.pyplot as plt
+plt.scatter(X_test,y_test,color='red')
+plt.plot(X_test,y_pred,color='blue')
+plt.title('Salary vs Experience (Test set)')
+plt.xlabel('Years of Experience')
+plt.ylabel('Salary')
+plt.show()
+
+'''
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+import matplotlib.pyplot as plt
+
+# Load the dataset
+data = pd.read_csv("Salary_Data.csv")
+
+# Check the first few rows and info
+print(data.head())
+print(data.info())
+
+# Check for missing values
+print(data.isna().sum())
+
+# Prepare the data
+X = data[['YearsExperience']]  # Features should be a 2D array
+y = data['Salary']  # Target variable
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+
+# Create and fit the model
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Make predictions
+y_pred = model.predict(X_test)
+
+# Evaluate the model
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+print(f'Mean Squared Error: {mse}')
+print(f'R^2 Score: {r2}')
+
+# Plotting the results
+plt.scatter(X_test, y_test, color='red', label='Actual Salary')
+plt.plot(X_test, y_pred, color='blue', label='Predicted Salary')
+plt.title('Salary vs Experience (Test set)')
+plt.xlabel('Years of Experience')
+plt.ylabel('Salary')
+plt.legend()
+plt.show()
+'''
